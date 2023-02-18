@@ -10,22 +10,43 @@ import scala.io.StdIn.readLine
 type Color = Char
 type Board = String
 val validColors = List('B', 'Y', 'R', 'G')
+val boardLength = 4
 
 /** Get a random color from the list of valid colors */
-def getRandomColor(): Color =
-  ???
+def getRandomColor(): Color = {
+  // randomly get valid index to choose from validColors
+  val randomNum = new Random().between(minInclusive = 0, maxExclusive = validColors.length)
+  return validColors(randomNum)
+}
 
 /** Given four colors, make a board from them */
 def makeBoardFromColors(c1: Color, c2: Color, c3: Color, c4: Color): Board =
-  ???
+  return List(c1, c2, c3, c4).mkString(" ")
 
 /** Create a random board */
-def getRandomBoard(): Board =
-  ???
+def getRandomBoard(): Board = {
+  val c1 = getRandomColor() 
+  val c2 = getRandomColor()
+  val c3 = getRandomColor()
+  val c4 = getRandomColor()
+  return makeBoardFromColors(c1, c2, c3, c4)
+}
 
 /** Play one round of the game */
-def playRound(board: Board): (Int, Int) =
-  ???
+def playRound(board: Board): (Int, Int) = {
+  println("For each spot on the board, input a color.")
+  println(f"Valid inputs: ${validColors.mkString(" ")}")
+
+  var guessBoard = new Array[Char](boardLength)
+  var guessSpot = 0
+
+  for (guessSpot <- 0 to (boardLength-1)) {
+    print(f"Enter a guess for spot ${guessSpot}: ")
+    val guessCol = scala.io.StdIn.readLine() 
+    guessBoard(guessSpot) = guessCol.head
+  }
+  return scoreGuess(board, guessBoard.mkString(""))
+}
 
 /** Score a guess
   *
@@ -68,7 +89,6 @@ def mastermind() = {
 
   // Create a new board
   val board = getRandomBoard()
-
   if (DEBUG) {
     println(s"[DEBUG] The board is $board")
   }
